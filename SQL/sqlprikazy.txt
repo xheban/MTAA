@@ -1,0 +1,4 @@
+INSERT INTO restaurants (name, min_price, delivery, rating, city_id) VALUES('Chili Pub','5','120','3.5','1')
+INSERT INTO restaurants (name, min_price, delivery, rating, city_id) VALUES('La Tratoria','7','90','4,8','2')
+UPDATE `cities` SET `name` = 'Trencin' WHERE `cities`.`id` = 2;
+INSERT INTO restaurants (name, min_price, delivery, rating, city_id) VALUES('Slovenska Klubovna','10','110','4.7','1')
