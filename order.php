@@ -1,6 +1,6 @@
 <?php
 header("Content-Type:application/json");
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if(isset($_GET['user_id'])){
         $userId = $_GET['user_id'];
         $con = mysqli_connect("localhost", "root", "", "mtaa");

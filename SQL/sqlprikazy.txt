@@ -21,3 +21,6 @@ ALTER TABLE orders
 ADD FOREIGN KEY (food_id) REFERENCES food(id);
 ALTER TABLE orders
 ADD FOREIGN KEY (user_id) REFERENCES users(id);
+
+--------------------
+ALTER TABLE `food` ADD `name` VARCHAR NOT NULL AFTER `weight`;
