@@ -1,31 +1,35 @@
 <?php
 header("Content-Type:application/json");
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $entityBody = file_get_contents('php://input');
     $params = json_decode($entityBody, true);
-    $keys = array("username","password");
+    $keys = array("username", "email");
     if(arrayKeysExists($keys,$params)){
-        foreach ($params as $key => $param){
-            $params[$key] = addQoute($param);
-        }
+
         $con = mysqli_connect("localhost", "root", "", "mtaa");
         if (mysqli_connect_errno()) {
             echo "Failed to connect to MySQL: " . mysqli_connect_error();
             die();
         }
-        $where = "user_name = ".$params['username']." AND password = ".$params['password'];
-        $sql = "SELECT count(id) as count FROM users WHERE ".$where;
-        $result = mysqli_query($con, $sql);
-        $row = mysqli_fetch_array($result);
-        if($row['count'] == 1){
-            response(200,"OK");
+        $sql = "UPDATE users SET email = ? WHERE user_name = ?";
+        if ($stmt = $con->prepare($sql)) {
+
+            $stmt->bind_param("ss", $params['email'],$params['username']);
+            $stmt->execute();
+            if($stmt->affected_rows == 1){
+                response(200,"Email successfully reset");
+            }else{
+                response(400,"One of input parameters are not valid");
+            }
+            $stmt->close();
         }else{
-            response(400,"Invalid username and password combination");
+            response(400,"Unexpected error");
         }
-        $con->close();
     }else{
         response(400,"One of input parameters are missing");
     }
+
+
 }else{
     response(400,"invalid type");
 }
@@ -46,7 +50,3 @@ function response($response_code,$response_desc){
     exit();
 }
 
-function addQoute($string){
-    $string = "\"$string\"";
-    return $string;
-}

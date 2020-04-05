@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $response['response_desc'] = $response_desc;
         $json_response = json_encode($response);
         echo $json_response;
-        return $json_response;
+        exit();
     }
 
     function addQoute($string){

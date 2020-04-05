@@ -6,3 +6,18 @@ INSERT INTO restaurants (name, min_price, delivery, rating, city_id) VALUES('Slo
 ----
 ALTER TABLE `restaurants` CHANGE `open_from` `open_from` TIME NOT NULL;
 ALTER TABLE `restaurants` CHANGE `open_to` `open_from` TIME NOT NULL;
+
+------------
+CREATE TABLE `mtaa`.`cart` ( `id` INT NOT NULL , `food_id` INT NOT NULL , `user_id` INT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ALTER TABLE cart
+ADD FOREIGN KEY (food_id) REFERENCES food(id);
+ALTER TABLE cart
+ADD FOREIGN KEY (user_id) REFERENCES users(id);
+ALTER TABLE `orders` DROP `order_food_id`;"?
+DROP TABLE order;
+DROP TABLE orderfood;
+CREATE TABLE `mtaa`.`orders` ( `id` INT NOT NULL AUTO_INCREMENT , `user_id` INT(10) NOT NULL , `food_id` INT(10) NOT NULL , `time` DATETIME NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+ALTER TABLE orders
+ADD FOREIGN KEY (food_id) REFERENCES food(id);
+ALTER TABLE orders
+ADD FOREIGN KEY (user_id) REFERENCES users(id);

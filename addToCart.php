@@ -1,23 +1,21 @@
 <?php
 header("Content-Type:application/json");
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $entityBody = file_get_contents('php://input');
-    $params = json_decode($entityBody, true);
-    $keys = array("username", "new_password", "password");
-    if(arrayKeysExists($keys,$params)){
-
+    if(isset($_GET['food_id']) && isset($_GET['user_id'])){
+        $foodId = $_GET['food_id'];
+        $userId = $_GET['user_id'];
         $con = mysqli_connect("localhost", "root", "", "mtaa");
         if (mysqli_connect_errno()) {
             echo "Failed to connect to MySQL: " . mysqli_connect_error();
             die();
         }
-        $sql = "UPDATE users SET password = ? WHERE user_name = ? and password = ?";
+        $sql = "INSERT INTO cart(food_id, user_id) VALUES(?, ?)";
         if ($stmt = $con->prepare($sql)) {
 
-            $stmt->bind_param("sss", $params['new_password'],$params['username'],$params['password']);
+            $stmt->bind_param("ii", $foodId,$userId);
             $stmt->execute();
-            if($stmt->affected_rows == 1){
-                response(200,"Password successfully reset");
+            if($stmt->affected_rows > 0){
+                response(200,"Food added to cart");
             }else{
                 response(400,"One of input parameters are not valid");
             }
@@ -34,14 +32,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     response(400,"invalid type");
 }
 
-function arrayKeysExists($keys,$array){
-    foreach ($keys as $key){
-        if(!array_key_exists($key,$array)){
-            return false;
-        }
-    } return true;
-}
-
 function response($response_code,$response_desc){
     $response['response_code'] = $response_code;
     $response['response_desc'] = $response_desc;
@@ -49,4 +39,3 @@ function response($response_code,$response_desc){
     echo $json_response;
     exit();
 }
-
