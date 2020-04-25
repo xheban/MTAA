@@ -1,6 +1,6 @@
 <?php
 header("Content-Type:application/json");
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $entityBody = file_get_contents('php://input');
     $params = json_decode($entityBody, true);
     $keys = array("username","password");
@@ -14,11 +14,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             die();
         }
         $where = "user_name = ".$params['username']." AND password = ".$params['password'];
-        $sql = "SELECT count(id) as count FROM users WHERE ".$where;
+        $sql = "SELECT count(id) as count, id FROM users WHERE ".$where;
         $result = mysqli_query($con, $sql);
         $row = mysqli_fetch_array($result);
         if($row['count'] == 1){
-            response(200,"OK");
+            $login = array("id" => $row['id']);
+            response(200,$login);
         }else{
             response(400,"Invalid username and password combination");
         }
@@ -43,7 +44,7 @@ function response($response_code,$response_desc){
     $response['response_desc'] = $response_desc;
     $json_response = json_encode($response);
     echo $json_response;
-    exit();
+    return $json_response;
 }
 
 function addQoute($string){

@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             die();
         }
 
-        $sql = "SELECT * FROM restaurants";
+    $sql = "SELECT * FROM restaurants";
 	$result = mysqli_query($con, $sql);
 	$restaurants = array();
 	while ($row = mysqli_fetch_assoc($result)) {
@@ -17,8 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	}
 	response(200,$restaurants);
         $con->close();
-
-    
 
 }else{
     response(400,"invalid type");
