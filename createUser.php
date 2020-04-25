@@ -4,6 +4,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $entityBody = file_get_contents('php://input');
     $params = json_decode($entityBody, true);
     $keys = array("username", "name", "lastname", "password", "email");
+    $canRegister = true;
+    $failReg = array("email" => false, "username" =>false);
     if(arrayKeysExists($keys,$params)){
 
         $con = mysqli_connect("localhost", "root", "", "mtaa");
@@ -14,14 +16,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         foreach ($params as $key => $param){
             $params[$key] = addQoute($param);
         }
-        $values = $params['username'].", ".$params['name'].", ".$params['lastname'].", ".$params['password'].", ".$params['email'];
-        $sql = "INSERT INTO users (user_name,`name`,last_name,password,email) values ($values)";
-        if ($con->query($sql) === TRUE) {
-            response(200,"User created");
-        }else{
-            response(400,"Adding of record was unsuccessful");
 
+        $sql = "SELECT count(id) as count FROM users where user_name = ".$params['username'];
+        $row = mysqli_fetch_array(mysqli_query($con, $sql));
+        if($row['count'] > 0){
+            $canRegister = false;
+            $failReg['username'] = true;
         }
+
+        $sql = "SELECT count(id) as count FROM users where email = ".$params['email'];
+        $row = mysqli_fetch_array(mysqli_query($con, $sql));
+        if($row['count'] > 0){
+            $canRegister = false;
+            $failReg['email'] = true;
+        }
+
+        if($canRegister){
+            $values = $params['username'].", ".$params['name'].", ".$params['lastname'].", ".$params['password'].", ".$params['email'];
+            $sql = "INSERT INTO users (user_name,`name`,last_name,password,email) values ($values)";
+            if ($con->query($sql) === TRUE) {
+                response(200,"User created");
+            }else{
+                response(400,"Adding of record was unsuccessful");
+            }
+        }else{
+            response(400,$failReg);
+        }
+
         $con->close();
     }else{
         response(400,"One of input parameters are missing");
