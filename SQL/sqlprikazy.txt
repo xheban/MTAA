@@ -24,3 +24,9 @@ ADD FOREIGN KEY (user_id) REFERENCES users(id);
 
 --------------------
 ALTER TABLE `food` ADD `name` VARCHAR NOT NULL AFTER `weight`;
+
+-----------------------------
+ALTER TABLE `restaurants` ADD `delivery_price` DOUBLE(10,2) UNSIGNED NOT NULL AFTER `delivery_time`;
+ALTER TABLE `restaurants` CHANGE `delivery` `delivery_time` DOUBLE NOT NULL;
+ALTER TABLE `food` DROP INDEX `restaurant_id`;
+ALTER TABLE `food` DROP INDEX `type_id`

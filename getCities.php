@@ -1,6 +1,6 @@
 <?php
     header("Content-Type:application/json");
-    if (isset($_GET['id']) && $_GET['id']!="") {
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
         $con = mysqli_connect("localhost", "root", "", "mtaa");
         if (mysqli_connect_errno()) {
@@ -8,35 +8,23 @@
             die();
         }
 
-        $id = $_GET['id'];
-
         $sql = "SELECT * FROM cities";
         $result = mysqli_query($con, $sql);
         $cities = array();
         while($row = mysqli_fetch_array($result)){
-            array_push($cities,$row);
+            $city = array("id" => $row['id'], "name" => $row['name']);
+            array_push($cities,$city);
         }
-        foreach ($cities as $city){
-            echo $city['name'];
-       }
+        if(!empty($cities)){
+            response(200,$cities);
+        }else{
+            response(400,"Empty city list");
+        }
 
-//    if(mysqli_num_rows($result)>0){
-//    $row = mysqli_fetch_array($result);
-//    $amount = $row['amount'];
-//    $response_code = $row['response_code'];
-//    $response_desc = $row['response_desc'];
-//    response($order_id, $amount, $response_code,$response_desc);
-//    mysqli_close($con);
-//    }else{
-//    response(NULL, NULL, 200,"No Record Found");
-//    }
-//    }else{
-//    response(NULL, NULL, 400,"Invalid Request");
-//    }
+    }else{
+        response(400,"invalid type");
     }
-    function response($order_id,$amount,$response_code,$response_desc){
-        $response['order_id'] = $order_id;
-        $response['amount'] = $amount;
+    function response($response_code,$response_desc){
         $response['response_code'] = $response_code;
         $response['response_desc'] = $response_desc;
 
