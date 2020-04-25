@@ -3,7 +3,7 @@ header("Content-Type:application/json");
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $entityBody = file_get_contents('php://input');
     $params = json_decode($entityBody, true);
-    $keys = array("username", "new_password", "password");
+    $keys = array("username", "email", "new_password");
     if(arrayKeysExists($keys,$params)){
 
         $con = mysqli_connect("localhost", "root", "", "mtaa");
@@ -11,10 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo "Failed to connect to MySQL: " . mysqli_connect_error();
             die();
         }
-        $sql = "UPDATE users SET password = ? WHERE user_name = ? and password = ?";
+        $sql = "UPDATE users SET password = ? WHERE user_name = ? AND email = ?";
         if ($stmt = $con->prepare($sql)) {
 
-            $stmt->bind_param("sss", $params['new_password'],$params['username'],$params['password']);
+            $stmt->bind_param("sss", $params['new_password'],$params['username'], $params['email']);
             $stmt->execute();
             if($stmt->affected_rows == 1){
                 response(200,"Password successfully reset");

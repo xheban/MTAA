@@ -1,6 +1,6 @@
 <?php
 header("Content-Type:application/json");
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $entityBody = file_get_contents('php://input');
     $params = json_decode($entityBody, true);
     $keys = array("username","password");
