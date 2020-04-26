@@ -3,7 +3,7 @@ header("Content-Type:application/json");
 if (isset($_POST)) {
     $entityBody = file_get_contents('php://input');
     $params = json_decode($entityBody, true);
-    $keys = array("restaurant_id", "price", "weight", "ingredients","type_id");
+    $keys = array("restaurant_id", "price", "weight", "ingredients","type_id","photo","name");
     if(arrayKeysExists($keys,$params)){
 
         $con = mysqli_connect("localhost", "root", "", "mtaa");
@@ -14,8 +14,8 @@ if (isset($_POST)) {
         foreach ($params as $key => $param){
             $params[$key] = addQoute($param);
         }
-        $values = $params['restaurant_id'].", ".$params['price'].", ".$params['weight'].", ".$params['ingredients'].", ".$params['type_id'];
-        $sql = "INSERT INTO food (restaurant_id,price,weight,ingredients,type_id) values ($values)";
+        $values = $params['restaurant_id'].", ".$params['price'].", ".$params['weight'].", ".$params['ingredients'].", ".$params['type_id'],.", ".$params['name'],.", ".$params['photo'];
+        $sql = "INSERT INTO food (restaurant_id,price,weight,ingredients,type_id,name,photo) values ($values)";
         echo($sql);
         if ($con->query($sql) === TRUE) {
             response(200,"Food added");

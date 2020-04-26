@@ -3,7 +3,7 @@ header("Content-Type:application/json");
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $entityBody = file_get_contents('php://input');
     $params = json_decode($entityBody, true);
-    $keys = array("username", "name", "lastname", "password", "email");
+    $keys = array("username", "name", "lastname", "password", "email", "imagestring");
     $canRegister = true;
     $failReg = array("email" => false, "username" =>false);
     if(arrayKeysExists($keys,$params)){
@@ -32,8 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         if($canRegister){
-            $values = $params['username'].", ".$params['name'].", ".$params['lastname'].", ".$params['password'].", ".$params['email'];
-            $sql = "INSERT INTO users (user_name,`name`,last_name,password,email) values ($values)";
+            $values = $params['username'].", ".$params['name'].", ".$params['lastname'].", ".$params['password'].", ".$params['email'].", ".$params['imagestring'];
+            $sql = "INSERT INTO users (user_name,`name`,last_name,password,email,photo) values ($values)";
             if ($con->query($sql) === TRUE) {
                 response(200,"User created");
             }else{
