@@ -17,17 +17,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if($stmt->affected_rows > 0){
                 response(200,"Food added to cart");
             }else{
-                response(400,"One of input parameters are not valid");
+                response(400,"Food wasn't added to cart");
             }
             $stmt->close();
         }else{
             response(400,"Unexpected error");
         }
+        $con->close();
     }else{
         response(400,"One of input parameters are missing");
     }
-
-    $con->close();
 }else{
     response(400,"invalid type");
 }
