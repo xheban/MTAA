@@ -16,7 +16,7 @@ if (isset($_POST)) {
         }
         $values = $params['restaurant_id'].", ".$params['price'].", ".$params['weight'].", ".$params['ingredients'].", ".$params['type_id'].", ".$params['name'].", ".$params['photo'];
         $sql = "INSERT INTO food (restaurant_id,price,weight,ingredients,type_id,name,photo) values ($values)";
-        echo($sql);
+        //echo($sql);
         if ($con->query($sql) === TRUE) {
             response(200,"Food added");
         }else{
