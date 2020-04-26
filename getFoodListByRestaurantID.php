@@ -1,29 +1,23 @@
 <?php
 header("Content-Type:application/json");
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    $entityBody = file_get_contents('php://input');
-    $params = json_decode($entityBody, true);
-    $keys = array("restaurant_id");
-    if(arrayKeysExists($keys,$params)){
-        foreach ($params as $key => $param){
-            $params[$key] = addQoute($param);
-        }
+    if(isset($_GET['restaurant_id'])) {
+
         $con = mysqli_connect("localhost", "root", "", "mtaa");
         if (mysqli_connect_errno()) {
             echo "Failed to connect to MySQL: " . mysqli_connect_error();
             die();
         }
-        $where = "restaurant_id = ".$params['restaurant_id'];
+        $where = "restaurant_id = ".$_GET['restaurant_id'];
         $sql = "SELECT * FROM food WHERE ".$where;
-	$result = mysqli_query($con, $sql);
-	$foods = array();
-	while ($row = mysqli_fetch_assoc($result)) {
-		//response(200,$row);
-		array_push($foods,$row);
-	}
-	response(200,$foods);
-        $con->close();
-
+        $result = mysqli_query($con, $sql);
+        $foods = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $row['photo'] = base64_encode($row['photo']);
+            array_push($foods,$row);
+        }
+        response(200,$foods);
+            $con->close();
     }else{
         response(400,"Restaurant_id is missing");
     }

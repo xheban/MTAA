@@ -30,3 +30,9 @@ ALTER TABLE `restaurants` ADD `delivery_price` DOUBLE(10,2) UNSIGNED NOT NULL AF
 ALTER TABLE `restaurants` CHANGE `delivery` `delivery_time` DOUBLE NOT NULL;
 ALTER TABLE `food` DROP INDEX `restaurant_id`;
 ALTER TABLE `food` DROP INDEX `type_id`
+
+CREATE TABLE `mtaa`.`food` ( `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT , 
+`restaurant_id` INT(11) UNSIGNED NOT NULL , `type_id` INT(11) UNSIGNED NOT NULL , 
+`ingredients` VARCHAR(500) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL , 
+`price` DOUBLE(10,2) UNSIGNED NOT NULL , `weight` DOUBLE(10,2) UNSIGNED NOT NULL , 
+`photo` LONGBLOB NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
