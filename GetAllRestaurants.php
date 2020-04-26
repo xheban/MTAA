@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $restaurants = array();
         while ($row = mysqli_fetch_assoc($result)) {
             $sql = "SELECT `name` from foodtype where id IN(
-                    SELECT DISTINCT(id) from food where restaurant_id= ".$row['id'].")";
+                    SELECT DISTINCT(type_id) from food where restaurant_id= ".$row['id'].")";
             $foodNames = mysqli_query($con, $sql);
             $foodTypes = "";
             $first = true;

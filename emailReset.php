@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if($stmt->affected_rows == 1){
                 response(200,"Email successfully reset");
             }else{
-                response(400,"One of input parameters are not valid");
+                response(400,"Invalid username");
             }
             $stmt->close();
         }else{
