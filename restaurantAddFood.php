@@ -14,7 +14,7 @@ if (isset($_POST)) {
         foreach ($params as $key => $param){
             $params[$key] = addQoute($param);
         }
-        $values = $params['restaurant_id'].", ".$params['price'].", ".$params['weight'].", ".$params['ingredients'].", ".$params['type_id'],.", ".$params['name'],.", ".$params['photo'];
+        $values = $params['restaurant_id'].", ".$params['price'].", ".$params['weight'].", ".$params['ingredients'].", ".$params['type_id'].", ".$params['name'].", ".$params['photo'];
         $sql = "INSERT INTO food (restaurant_id,price,weight,ingredients,type_id,name,photo) values ($values)";
         echo($sql);
         if ($con->query($sql) === TRUE) {
