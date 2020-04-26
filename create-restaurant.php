@@ -3,7 +3,7 @@ header("Content-Type:application/json");
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $entityBody = file_get_contents('php://input');
     $params = json_decode($entityBody, true);
-    $keys = array("food_id", "name", "delivery", "min_price", "city_id","photo","from","to");
+    $keys = array("food_id", "name", "delivery_time","delivery_price", "min_price", "city_id","photo","from","to");
     if(arrayKeysExists($keys,$params)){
 
         $con = mysqli_connect("localhost", "root", "", "mtaa");
@@ -12,12 +12,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             die();
         }
 	
-	//$foto = base64_decode($params['photo']);
-	
-        $sql = "INSERT INTO restaurants SET name = ?, delivery = ?, min_price = ?, city_id = ?, rating = 0, photo = ?, open_from = ?, open_to = ?";
+        $sql = "INSERT INTO restaurants SET name = ?, delivery_time = ?,delivery_price = ?, min_price = ?, city_id = ?, rating = 0, photo = ?, open_from = ?, open_to = ?";
         if ($stmt = $con->prepare($sql)) {
-
-            $stmt->bind_param("sddisss", $params['name'],$params['delivery'],$params['min_price'],$params['city_id'],$params['photo'],$params['from'],$params['to']);
+            $photo = base64_decode($params['photo']);
+            $stmt->bind_param("sdddisss", $params['name'],$params['delivery_time'],$params['delivery_price'], $params['min_price'],$params['city_id'],$photo, $params['from'],$params['to']);
             $stmt->execute();
             if($stmt->affected_rows == 1){
                 response(200,"Restaurant was created! ");
